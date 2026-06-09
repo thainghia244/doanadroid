@@ -1,3 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">myapplication</string>
+    <string name="app_name">Scientific Calculator</string>
+    <string name="basic_tab">Cơ bản</string>
+    <string name="scientific_tab">Khoa học</string>
+    <string name="programming_tab">Lập trình</string>
 </resources>
