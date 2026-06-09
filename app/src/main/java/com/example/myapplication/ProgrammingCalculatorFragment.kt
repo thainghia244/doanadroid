@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -18,7 +17,8 @@ class ProgrammingCalculatorFragment : Fragment() {
     private lateinit var rgEquationType: RadioGroup
     private lateinit var containerQuadratic: View
     private lateinit var containerCubic: View
-    private lateinit var containerSystem: View
+    private lateinit var containerSystem2x2: View
+    private lateinit var containerSystem3x3: View
     private lateinit var calculatorEngine: CalculatorEngine
 
     // Quadratic inputs
@@ -32,13 +32,27 @@ class ProgrammingCalculatorFragment : Fragment() {
     private lateinit var etCubC: EditText
     private lateinit var etCubD: EditText
 
-    // System of equations inputs
-    private lateinit var etSys1A: EditText
-    private lateinit var etSys1B: EditText
-    private lateinit var etSys1C: EditText
-    private lateinit var etSys2A: EditText
-    private lateinit var etSys2B: EditText
-    private lateinit var etSys2C: EditText
+    // System 2x2 inputs
+    private lateinit var etSys2x2_a1: EditText
+    private lateinit var etSys2x2_b1: EditText
+    private lateinit var etSys2x2_c1: EditText
+    private lateinit var etSys2x2_a2: EditText
+    private lateinit var etSys2x2_b2: EditText
+    private lateinit var etSys2x2_c2: EditText
+
+    // System 3x3 inputs
+    private lateinit var etSys3x3_a1: EditText
+    private lateinit var etSys3x3_b1: EditText
+    private lateinit var etSys3x3_c1: EditText
+    private lateinit var etSys3x3_d1: EditText
+    private lateinit var etSys3x3_a2: EditText
+    private lateinit var etSys3x3_b2: EditText
+    private lateinit var etSys3x3_c2: EditText
+    private lateinit var etSys3x3_d2: EditText
+    private lateinit var etSys3x3_a3: EditText
+    private lateinit var etSys3x3_b3: EditText
+    private lateinit var etSys3x3_c3: EditText
+    private lateinit var etSys3x3_d3: EditText
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,7 +76,8 @@ class ProgrammingCalculatorFragment : Fragment() {
         // Containers
         containerQuadratic = view.findViewById(R.id.container_quadratic)
         containerCubic = view.findViewById(R.id.container_cubic)
-        containerSystem = view.findViewById(R.id.container_system)
+        containerSystem2x2 = view.findViewById(R.id.container_system_2x2)
+        containerSystem3x3 = view.findViewById(R.id.container_system_3x3)
 
         // Quadratic EditTexts
         etQuadA = view.findViewById(R.id.et_quad_a)
@@ -75,13 +90,27 @@ class ProgrammingCalculatorFragment : Fragment() {
         etCubC = view.findViewById(R.id.et_cub_c)
         etCubD = view.findViewById(R.id.et_cub_d)
 
-        // System EditTexts
-        etSys1A = view.findViewById(R.id.et_sys1_a)
-        etSys1B = view.findViewById(R.id.et_sys1_b)
-        etSys1C = view.findViewById(R.id.et_sys1_c)
-        etSys2A = view.findViewById(R.id.et_sys2_a)
-        etSys2B = view.findViewById(R.id.et_sys2_b)
-        etSys2C = view.findViewById(R.id.et_sys2_c)
+        // System 2x2 EditTexts
+        etSys2x2_a1 = view.findViewById(R.id.et_sys2x2_a1)
+        etSys2x2_b1 = view.findViewById(R.id.et_sys2x2_b1)
+        etSys2x2_c1 = view.findViewById(R.id.et_sys2x2_c1)
+        etSys2x2_a2 = view.findViewById(R.id.et_sys2x2_a2)
+        etSys2x2_b2 = view.findViewById(R.id.et_sys2x2_b2)
+        etSys2x2_c2 = view.findViewById(R.id.et_sys2x2_c2)
+
+        // System 3x3 EditTexts
+        etSys3x3_a1 = view.findViewById(R.id.et_sys3x3_a1)
+        etSys3x3_b1 = view.findViewById(R.id.et_sys3x3_b1)
+        etSys3x3_c1 = view.findViewById(R.id.et_sys3x3_c1)
+        etSys3x3_d1 = view.findViewById(R.id.et_sys3x3_d1)
+        etSys3x3_a2 = view.findViewById(R.id.et_sys3x3_a2)
+        etSys3x3_b2 = view.findViewById(R.id.et_sys3x3_b2)
+        etSys3x3_c2 = view.findViewById(R.id.et_sys3x3_c2)
+        etSys3x3_d2 = view.findViewById(R.id.et_sys3x3_d2)
+        etSys3x3_a3 = view.findViewById(R.id.et_sys3x3_a3)
+        etSys3x3_b3 = view.findViewById(R.id.et_sys3x3_b3)
+        etSys3x3_c3 = view.findViewById(R.id.et_sys3x3_c3)
+        etSys3x3_d3 = view.findViewById(R.id.et_sys3x3_d3)
 
         // Setup radio group listener
         rgEquationType.setOnCheckedChangeListener { _, checkedId ->
@@ -91,12 +120,14 @@ class ProgrammingCalculatorFragment : Fragment() {
         // Solve buttons
         val btnSolveQuad = view.findViewById<Button>(R.id.btn_solve_quad)
         val btnSolveCub = view.findViewById<Button>(R.id.btn_solve_cub)
-        val btnSolveSys = view.findViewById<Button>(R.id.btn_solve_sys)
+        val btnSolveSys2x2 = view.findViewById<Button>(R.id.btn_solve_sys_2x2)
+        val btnSolveSys3x3 = view.findViewById<Button>(R.id.btn_solve_sys_3x3)
         val btnClear = view.findViewById<Button>(R.id.btn_clear)
 
         btnSolveQuad.setOnClickListener { solveQuadratic() }
         btnSolveCub.setOnClickListener { solveCubic() }
-        btnSolveSys.setOnClickListener { solveSystemOfEquations() }
+        btnSolveSys2x2.setOnClickListener { solveSystem2x2() }
+        btnSolveSys3x3.setOnClickListener { solveSystem3x3() }
         btnClear.setOnClickListener { clearAll() }
 
         // Set default visibility
@@ -106,7 +137,8 @@ class ProgrammingCalculatorFragment : Fragment() {
     private fun updateContainerVisibility(checkedId: Int) {
         containerQuadratic.visibility = if (checkedId == R.id.rb_quadratic) View.VISIBLE else View.GONE
         containerCubic.visibility = if (checkedId == R.id.rb_cubic) View.VISIBLE else View.GONE
-        containerSystem.visibility = if (checkedId == R.id.rb_system) View.VISIBLE else View.GONE
+        containerSystem2x2.visibility = if (checkedId == R.id.rb_system_2x2) View.VISIBLE else View.GONE
+        containerSystem3x3.visibility = if (checkedId == R.id.rb_system_3x3) View.VISIBLE else View.GONE
         clearResult()
     }
 
@@ -121,7 +153,7 @@ class ProgrammingCalculatorFragment : Fragment() {
             if (error != null) {
                 showError(error)
             } else {
-                showResult("Phương trình: ${a}x² + ${b}x + ${c} = 0\n\nKết quả:\n$result")
+                showResult("Δ = ${calculatorEngine.formatResult(b * b - 4 * a * c)}\n\nPhương trình: ${a}x² + ${b}x + ${c} = 0\n\nKết quả:\n$result")
             }
         } catch (e: Exception) {
             showError("Lỗi: ${e.message}")
@@ -147,37 +179,51 @@ class ProgrammingCalculatorFragment : Fragment() {
         }
     }
 
-    private fun solveSystemOfEquations() {
+    private fun solveSystem2x2() {
         try {
-            // Hệ phương trình:
-            // a1*x + b1*y = c1
-            // a2*x + b2*y = c2
-            val a1 = etSys1A.text.toString().toDoubleOrNull() ?: return showError("Nhập a1")
-            val b1 = etSys1B.text.toString().toDoubleOrNull() ?: return showError("Nhập b1")
-            val c1 = etSys1C.text.toString().toDoubleOrNull() ?: return showError("Nhập c1")
+            val a1 = etSys2x2_a1.text.toString().toDoubleOrNull() ?: return showError("Nhập a1")
+            val b1 = etSys2x2_b1.text.toString().toDoubleOrNull() ?: return showError("Nhập b1")
+            val c1 = etSys2x2_c1.text.toString().toDoubleOrNull() ?: return showError("Nhập c1")
+            val a2 = etSys2x2_a2.text.toString().toDoubleOrNull() ?: return showError("Nhập a2")
+            val b2 = etSys2x2_b2.text.toString().toDoubleOrNull() ?: return showError("Nhập b2")
+            val c2 = etSys2x2_c2.text.toString().toDoubleOrNull() ?: return showError("Nhập c2")
 
-            val a2 = etSys2A.text.toString().toDoubleOrNull() ?: return showError("Nhập a2")
-            val b2 = etSys2B.text.toString().toDoubleOrNull() ?: return showError("Nhập b2")
-            val c2 = etSys2C.text.toString().toDoubleOrNull() ?: return showError("Nhập c2")
+            val (result, error) = calculatorEngine.solveSystem2x2(a1, b1, c1, a2, b2, c2)
 
-            // Tính định thức
-            val det = a1 * b2 - a2 * b1
-
-            val result = when {
-                det == 0.0 && a1 * c2 == a2 * c1 -> {
-                    "Hệ có vô số nghiệm"
-                }
-                det == 0.0 -> {
-                    "Hệ vô nghiệm"
-                }
-                else -> {
-                    val x = (c1 * b2 - c2 * b1) / det
-                    val y = (a1 * c2 - a2 * c1) / det
-                    "Hệ phương trình:\n${a1}x + ${b1}y = ${c1}\n${a2}x + ${b2}y = ${c2}\n\nKết quả:\nx = ${calculatorEngine.formatResult(x)}\ny = ${calculatorEngine.formatResult(y)}"
-                }
+            if (error != null) {
+                showError(error)
+            } else {
+                showResult("Hệ phương trình:\n${a1}x + ${b1}y = ${c1}\n${a2}x + ${b2}y = ${c2}\n\nKết quả:\n$result")
             }
+        } catch (e: Exception) {
+            showError("Lỗi: ${e.message}")
+        }
+    }
 
-            showResult(result)
+    private fun solveSystem3x3() {
+        try {
+            val a1 = etSys3x3_a1.text.toString().toDoubleOrNull() ?: return showError("Nhập a1")
+            val b1 = etSys3x3_b1.text.toString().toDoubleOrNull() ?: return showError("Nhập b1")
+            val c1 = etSys3x3_c1.text.toString().toDoubleOrNull() ?: return showError("Nhập c1")
+            val d1 = etSys3x3_d1.text.toString().toDoubleOrNull() ?: return showError("Nhập d1")
+
+            val a2 = etSys3x3_a2.text.toString().toDoubleOrNull() ?: return showError("Nhập a2")
+            val b2 = etSys3x3_b2.text.toString().toDoubleOrNull() ?: return showError("Nhập b2")
+            val c2 = etSys3x3_c2.text.toString().toDoubleOrNull() ?: return showError("Nhập c2")
+            val d2 = etSys3x3_d2.text.toString().toDoubleOrNull() ?: return showError("Nhập d2")
+
+            val a3 = etSys3x3_a3.text.toString().toDoubleOrNull() ?: return showError("Nhập a3")
+            val b3 = etSys3x3_b3.text.toString().toDoubleOrNull() ?: return showError("Nhập b3")
+            val c3 = etSys3x3_c3.text.toString().toDoubleOrNull() ?: return showError("Nhập c3")
+            val d3 = etSys3x3_d3.text.toString().toDoubleOrNull() ?: return showError("Nhập d3")
+
+            val (result, error) = calculatorEngine.solveSystem3x3(a1, b1, c1, d1, a2, b2, c2, d2, a3, b3, c3, d3)
+
+            if (error != null) {
+                showError(error)
+            } else {
+                showResult("Hệ phương trình:\n${a1}x + ${b1}y + ${c1}z = ${d1}\n${a2}x + ${b2}y + ${c2}z = ${d2}\n${a3}x + ${b3}y + ${c3}z = ${d3}\n\nKết quả:\n$result")
+            }
         } catch (e: Exception) {
             showError("Lỗi: ${e.message}")
         }
@@ -193,12 +239,25 @@ class ProgrammingCalculatorFragment : Fragment() {
         etCubC.text.clear()
         etCubD.text.clear()
 
-        etSys1A.text.clear()
-        etSys1B.text.clear()
-        etSys1C.text.clear()
-        etSys2A.text.clear()
-        etSys2B.text.clear()
-        etSys2C.text.clear()
+        etSys2x2_a1.text.clear()
+        etSys2x2_b1.text.clear()
+        etSys2x2_c1.text.clear()
+        etSys2x2_a2.text.clear()
+        etSys2x2_b2.text.clear()
+        etSys2x2_c2.text.clear()
+
+        etSys3x3_a1.text.clear()
+        etSys3x3_b1.text.clear()
+        etSys3x3_c1.text.clear()
+        etSys3x3_d1.text.clear()
+        etSys3x3_a2.text.clear()
+        etSys3x3_b2.text.clear()
+        etSys3x3_c2.text.clear()
+        etSys3x3_d2.text.clear()
+        etSys3x3_a3.text.clear()
+        etSys3x3_b3.text.clear()
+        etSys3x3_c3.text.clear()
+        etSys3x3_d3.text.clear()
 
         clearResult()
     }
