@@ -77,12 +77,16 @@ class BasicCalculatorFragment : Fragment() {
         val btnMinus = view.findViewById<Button>(R.id.btn_minus)
         val btnMultiply = view.findViewById<Button>(R.id.btn_multiply)
         val btnDivide = view.findViewById<Button>(R.id.btn_divide)
+        val btnPower = view.findViewById<Button>(R.id.btn_power)
+        val btnPercent = view.findViewById<Button>(R.id.btn_percent)
         val btnEqual = view.findViewById<Button>(R.id.btn_equal)
 
         btnPlus.setOnClickListener { onOperationPressed("+") }
         btnMinus.setOnClickListener { onOperationPressed("-") }
         btnMultiply.setOnClickListener { onOperationPressed("×") }
         btnDivide.setOnClickListener { onOperationPressed("/") }
+        btnPower.setOnClickListener { onOperationPressed("^") }
+        btnPercent.setOnClickListener { onOperationPressed("%") }
         btnEqual.setOnClickListener { onEqualPressed() }
     }
 
